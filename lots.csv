@@ -1,0 +1,27 @@
+Id,Image,Part No,Name,Color,Quantity,Average Price,Value
+1,"=IMAGE(""HTTP://img.bricklink.com/P/1/3678b.jpg"")",3678b,Slope 65 2 x 2 x 2 with Bottom Tube,White,7,0.1147,0.8029
+2,"=IMAGE(""HTTP://img.bricklink.com/P/86/3678b.jpg"")",3678b,Slope 65 2 x 2 x 2 with Bottom Tube,Light Bluish Gray,31,0.0967,2.9977
+3,"=IMAGE(""HTTP://img.bricklink.com/P/68/3678b.jpg"")",3678b,Slope 65 2 x 2 x 2 with Bottom Tube,Dark Orange,21,0.1914,4.0194
+4,"=IMAGE(""HTTP://img.bricklink.com/P/93/3039.jpg"")",3039,Slope 45 2 x 2,Light Purple,28,0.0000,0.0
+5,"=IMAGE(""HTTP://img.bricklink.com/P/1/3039.jpg"")",3039,Slope 45 2 x 2,various,20,0.1,2.0
+6,"=IMAGE(""HTTP://img.bricklink.com/P/1/3039.jpg"")",3039,Slope 45 2 x 2,White,26,0.0661,1.7186000000000001
+7,"=IMAGE(""HTTP://img.bricklink.com/P/59/3039.jpg"")",3039,Slope 45 2 x 2,Dark Red,48,0.0603,2.8944
+8,"=IMAGE(""HTTP://img.bricklink.com/P/5/3039.jpg"")",3039,Slope 45 2 x 2,Red,44,0.0473,2.0812
+9,"=IMAGE(""HTTP://img.bricklink.com/P/8/3039.jpg"")",3039,Slope 45 2 x 2,Brown,47,0.2130,10.011
+10,"=IMAGE(""HTTP://img.bricklink.com/P/63/3039.jpg"")",3039,Slope 45 2 x 2,Dark Blue,123,0.0492,6.0516
+11,"=IMAGE(""HTTP://img.bricklink.com/P/85/3039.jpg"")",3039,Slope 45 2 x 2,Dark Bluish Gray,39,0.0591,2.3049
+12,"=IMAGE(""HTTP://img.bricklink.com/P/6/3039.jpg"")",3039,Slope 45 2 x 2,Green,35,0.0382,1.337
+13,"=IMAGE(""HTTP://img.bricklink.com/P/71/3039.jpg"")",3039,Slope 45 2 x 2,Magenta,36,0.0439,1.5804
+14,"=IMAGE(""HTTP://img.bricklink.com/P/86/3039.jpg"")",3039,Slope 45 2 x 2,Light Bluish Gray,6,0.0567,0.3402
+15,"=IMAGE(""HTTP://img.bricklink.com/P/155/3039.jpg"")",3039,Slope 45 2 x 2,Olive Green,30,0.0953,2.859
+16,"=IMAGE(""HTTP://img.bricklink.com/P/88/3660.jpg"")",3660,"Slope, Inverted 45 2 x 2",Reddish Brown,20,0.0354,0.708
+17,"=IMAGE(""HTTP://img.bricklink.com/P/7/3660.jpg"")",3660,"Slope, Inverted 45 2 x 2",Blue,68,0.0403,2.7404
+18,"=IMAGE(""HTTP://img.bricklink.com/P/12/3039.jpg"")",3039,Slope 45 2 x 2,Trans-Clear,1864,0.0429,79.9656
+19,"=IMAGE(""HTTP://img.bricklink.com/P/6/3660.jpg"")",3660,"Slope, Inverted 45 2 x 2",Green,13,0.0364,0.4732
+20,"=IMAGE(""HTTP://img.bricklink.com/P/5/3660.jpg"")",3660,"Slope, Inverted 45 2 x 2",Red,45,0.0515,2.3175
+21,"=IMAGE(""HTTP://img.bricklink.com/P/1/3660.jpg"")",3660,"Slope, Inverted 45 2 x 2",White,201,0.1139,22.8939
+22,"=IMAGE(""HTTP://img.bricklink.com/P/88/3660.jpg"")",3660,"Slope, Inverted 45 2 x 2",Reddish Brown,51,0.0354,1.8054000000000001
+23,"=IMAGE(""HTTP://img.bricklink.com/P/5/3298.jpg"")",3298,Slope 33 3 x 2,Red,92,0.0541,4.9772
+24,"=IMAGE(""HTTP://img.bricklink.com/P/85/3298.jpg"")",3298,Slope 33 3 x 2,Dark Bluish Gray,120,0.1188,14.256
+25,"=IMAGE(""HTTP://img.bricklink.com/P/6/3298.jpg"")",3298,Slope 33 3 x 2,Green,83,0.2972,24.6676
+26,"=IMAGE(""HTTP://img.bricklink.com/P/7/3298.jpg"")",3298,Slope 33 3 x 2,Blue,38,0.0535,2.033
