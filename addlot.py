@@ -22,7 +22,7 @@ def main(args):
     
     if (False and args.init):
       fields=['Id','Image','Part No', 'Name', 'Color', 'Quantity', 
-              'Average Price', 'Value']
+              'Average Price', 'Value', 'Remarks']
       with open(args.file, 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(fields)
@@ -36,22 +36,25 @@ def main(args):
           id = int(data[0])
     
     color = args.color
-    image_color = 'White' if args.color.lower() == 'various' else args.color
+    image_color = 'White' if args.color.lower().startswith('various') else args.color
     bl = blapi.BL()
     item = bl.getItemInfo('PART', args.part_no)
-    price = 0.1 if args.color.lower() == 'various' else bl.getAveragePrice('PART', args.part_no, args.color)
+    price = 0.1 if args.color.lower().startswith('various') or args.name else bl.getAveragePrice('PART', args.part_no, args.color)
     image = bl.getImage('PART', args.part_no, image_color)
     quantity = int(args.qty if int(args.weight) <= 0 else (int(args.weight)-1)/float(item['weight']))
+    name = item['name'] if not args.name else args.name
+    part_no = args.part_no if not args.name else 'N/A'
     pp(item)
     
     fields=[id+1,
             '=IMAGE("HTTP:{}")'.format(image['thumbnail_url']),
-            args.part_no,
-            item['name'],
+            part_no,
+            name,
             color,
             quantity,
             price,
-            int(quantity)*float(price)
+            int(quantity)*float(price),
+            args.remarks
             ]
     pp(fields)
     
@@ -80,13 +83,16 @@ if __name__ == "__main__":
     parser.add_argument("-i", "--init", action="store_true", default=False)
 
     # Optional argument which requires a parameter (eg. -d test)
-    #parser.add_argument("-n", "--name", action="store", dest="name")
+    parser.add_argument("-n", "--name", action="store", dest="name")
     
     parser.add_argument("-w", "--weight", action="store", dest="weight", default=0,
       help="Weight of item, in grams, to calculate quantity")
     
     parser.add_argument("-f", "--file", action="store", dest="file", default='lots.csv',
       help="CSV File to store lots")
+    
+    parser.add_argument("-r", "--remarks", action="store", dest="remarks",
+      help="Remarks about the lot (condition, color, etc.")
     
     # Optional verbosity counter (eg. -v, -vv, -vvv, etc.)
     #parser.add_argument(
