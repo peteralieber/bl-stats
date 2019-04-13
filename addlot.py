@@ -61,13 +61,14 @@ def main(args):
     #for i in fields: print(i)
     #for i in fields: print(repr(i))
     
-    with open(args.file, 'a', newline='') as f:
-      writer = csv.writer(f)
-      writer.writerow(fields)
-    
-    with open ("lots.dat", "w") as datfile:
-      datfile.write(str(id+1))
-    
+    if not args.test:
+      with open(args.file, 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(fields)
+      
+      with open ("lots.dat", "w") as datfile:
+        datfile.write(str(id+1))
+      
 
 if __name__ == "__main__":
     """ This is executed when run from the command line """
@@ -81,6 +82,7 @@ if __name__ == "__main__":
       
     # Optional argument flag which defaults to False
     parser.add_argument("-i", "--init", action="store_true", default=False)
+    parser.add_argument("-t", "--test", action="store_true", default=False)
 
     # Optional argument which requires a parameter (eg. -d test)
     parser.add_argument("-n", "--name", action="store", dest="name")
