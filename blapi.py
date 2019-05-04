@@ -40,7 +40,7 @@ class BL(object):
     if res['meta']['code'] != 200:
       print('ERROR')
       print(res['meta'])
-      return -1
+      return 0
     else:
       return res['data']
       
@@ -50,21 +50,22 @@ class BL(object):
     if res['meta']['code'] != 200:
       print('ERROR')
       print(res['meta'])
-      return -1
+      return 0
     else:
       return res['data']
       
-  def getPriceGuide(self, type, no, color='White', guide_type='sold', verbose=False):
+  def getPriceGuide(self, type, no, color='White', guide_type='sold', new_or_used='N', verbose=False):
     req = requests.get(self.base_url+'/items/{type}/{no}/price'.format(type=type, no=no), 
       params={
         'color_id': self.getColor(color)['color_id'],
-        'guide_type': guide_type
+        'guide_type': guide_type,
+        'new_or_used': new_or_used
       }, auth=self.oauth)
     res = req.json()
     if res['meta']['code'] != 200:
       print('ERROR')
       print(res['meta'])
-      return -1
+      return 0
     else:
       if not verbose: res['data']['price_detail'] = []
       return res['data']
@@ -75,14 +76,14 @@ class BL(object):
     if res['meta']['code'] != 200:
       print('ERROR')
       print(res['meta'])
-      return -1
+      return 0
     else:
       return res['data']
       
   def getAveragePrice(self, type, no, color):
     pg = self.getPriceGuide(type, no, color)
     if not pg:
-      return -1
+      return 0
     else:
       return pg['avg_price']
   

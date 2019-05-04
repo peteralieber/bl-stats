@@ -9,6 +9,16 @@ __license__ = "MIT"
 
 import argparse
 import csv
+from enum import Enum
+import math
+import blapi
+import pdb
+
+class DivChoice(Enum):
+  DIV_NONE = 1
+  DIV_QTY = 2
+  DIV_VAL = 3
+  
 
 def main(args):
     """ Main entry point of the app """
@@ -17,22 +27,60 @@ def main(args):
     
     max_qty = int(args.max_quantity) if args.max_quantity else None
     max_val = float(args.max_value) if args.max_value else None
+    min_val = float(args.max_value) if args.max_value else None
+    
+    bl = blapi.BL()
     
     with open(args.file, newline='') as csvfile:
       reader = csv.DictReader(csvfile)
       with open(args.output_file, 'w', newline='') as outfile:
+        fieldnames = reader.fieldnames
+        fieldnames.insert(fieldnames.index('Remarks'), 'Used Price')
+        fieldnames.insert(fieldnames.index('Remarks'), 'Used Value')
         writer = csv.DictWriter(outfile, fieldnames=reader.fieldnames)
         writer.writeheader()
         for row in reader:
-          if max_qty is not None and int(row['Quantity']) > max_qty:
-            row['Quantity'] = int(row['Quantity'])/2
+          row_qty = int(row['Quantity'])
+          row_val = float(row['Value'])
+          row_used_price = 0.1 if float(row['Average Price']) == 0.1 else bl.getAveragePrice('PART', row['Part No'], row['Color'])
+          row_used_price = float(row_used_price)
+          row_used_value = row_qty*row_used_price
+          row['Used Price'] = row_used_price
+          row['Used Value'] = row_used_value
+          div_choice = DivChoice.DIV_NONE
+          lot_div = 1
+          #print('ID: ' + row['Id'])
+          #if (int(row['Id']) == 93):
+          #  pdb.set_trace()
+          if max_qty is not None and row_qty > max_qty and max_val is not None and row_val > max_val:
+            lot_qty_div = math.ceil(row_qty / max_qty)
+            lot_val_div = math.ceil(row_val / max_val)
+            if lot_qty_div > lot_val_div:
+              div_choice = DivChoice.DIV_QTY
+              lot_div = lot_qty_div
+            else:
+              div_choice = DivChoice.DIV_VAL
+              lot_div = lot_val_div
+          elif max_qty is not None and row_qty > max_qty:
+            lot_div = math.ceil(row_qty / max_qty)
+            div_choice = DivChoice.DIV_QTY
+          elif max_val is not None and float(row['Value']) > max_val:
+            lot_div = math.ceil(row_val / max_val)
+            div_choice = DivChoice.DIV_VAL
+
+          if (div_choice is not DivChoice.DIV_NONE):
+            new_qty = math.floor(row_qty/lot_div)
+            row['Quantity'] = new_qty
+            row['Value'] = new_qty * float(row['Average Price'])
+            row_used_value = new_qty*row_used_price
+            row['Used Value'] = row_used_value
             og_id = row['Id']
-            row['Id'] = og_id + '.1'
-            writer.writerow(row)
-            row['Id'] = og_id + '.2'
-            writer.writerow(row)
+            for i in range(lot_div):
+              row['Id'] = og_id + '.' + str(i+1)
+              writer.writerow(row)
           else:
             writer.writerow(row)
+          #endif
         #endfor
       #endwith writer
     #endwith reader
