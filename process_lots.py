@@ -41,12 +41,13 @@ def main(args):
         writer.writeheader()
         for row in reader:
           row_qty = int(row['Quantity'])
-          row_val = float(row['Value'])
+          row_new_value = float(row['Value'])
           row_used_price = 0.1 if float(row['Average Price']) == 0.1 else bl.getAveragePrice('PART', row['Part No'], row['Color'])
           row_used_price = float(row_used_price)
           row_used_value = row_qty*row_used_price
           row['Used Price'] = row_used_price
           row['Used Value'] = row_used_value
+          row_val = row_used_value if args.used else row_new_value
           div_choice = DivChoice.DIV_NONE
           lot_div = 1
           #print('ID: ' + row['Id'])
@@ -96,7 +97,7 @@ if __name__ == "__main__":
     parser.add_argument("file", help="Input Lot CSV File")
 
     # Optional argument flag which defaults to False
-    #parser.add_argument("-f", "--flag", action="store_true", default=False)
+    parser.add_argument("-u", "--used", action="store_true", default=False)
 
     # Optional argument which requires a parameter (eg. -d test)
     parser.add_argument("-mv", "--max_value", action="store", dest="max_value")
