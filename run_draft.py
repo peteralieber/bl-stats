@@ -29,12 +29,14 @@ def main(args):
     """ Main entry point of the app """
     print("Run Draft " + __version__)
     print(args)
-    pp = pprint.PrettyPrinter(indent=2).pprint
+    pp = pprint.PrettyPrinter(indent=2,width=200).pprint
     
     bl = blapi.BL()
     lots_taken = {}
     participants = {}
     rows = {}
+    fieldnames = []
+    lot_ids = []
     
     with open(args.file, newline='') as csvfile:
       reader = csv.DictReader(csvfile)
@@ -45,6 +47,7 @@ def main(args):
       for row in reader:
         rows[row['Id']] = row
         lots_taken[row['Id']] = False
+        lot_ids = lot_ids + [row['Id']]
         #pdb.set_trace()
         for participant in participants.keys():
           if row[participant].strip() == "":
@@ -53,10 +56,10 @@ def main(args):
         #endfor
       #endfor
     #endwith reader
-    for participant in participants:
-      pp(participant)
-      pp(participants[participant])
-      print("")
+    #for participant in participants:
+    #  pp(participant)
+    #  pp(participants[participant])
+    #  print("")
     #Run Draft
     
     plist = ['Peter Lieber', 'Peter Lieber', 'Peter Lieber', 'Peter Lieber',
@@ -70,6 +73,8 @@ def main(args):
     random.shuffle(plist)
     hauls = {p:[] for p in participants.keys()}
     
+    print("Turn Order:")
+    pp(plist)
     
     #participants: lists of priorities
     #plist: turn order
@@ -80,7 +85,7 @@ def main(args):
     while turntaken:
       turntaken = False
       for p in plist:
-        print("Turn: " + p)
+        #print("Turn: " + p)
         # find first non-taken lot
         if len(participants[p]) > 0:
           while lots_taken[participants[p][0][1]]:
@@ -89,14 +94,15 @@ def main(args):
               break
             participants[p] = participants[p][1:]
           #endwhile
-          if len(participants[p]) > 0:
+          if len(participants[p]) > 0: # Take Turn
             lots_taken[participants[p][0][1]] = True
-            hauls[p] = hauls[p] + [participants[p][0]]
+            hauls[p] = hauls[p] + [participants[p][0] + (rows[participants[p][0][1]]['Name'], rows[participants[p][0][1]]['Color'], rows[participants[p][0][1]]['Quantity'])]
+            rows[participants[p][0][1]]['Winner'] = p
             turntaken = True
         #endif
         
       for p in reversed(plist):
-        print("Turn: " + p)
+        #print("Turn: " + p)
         # find first non-taken lot
         if len(participants[p]) > 0:
           while lots_taken[participants[p][0][1]]:
@@ -105,15 +111,23 @@ def main(args):
               break
             participants[p] = participants[p][1:]
           #endwhile
-          if len(participants[p]) > 0:
+          if len(participants[p]) > 0: # Take Turn
             lots_taken[participants[p][0][1]] = True
-            hauls[p] = hauls[p] + [participants[p][0]]
+            hauls[p] = hauls[p] + [participants[p][0] + (rows[participants[p][0][1]]['Name'], rows[participants[p][0][1]]['Quantity'])]
+            rows[participants[p][0][1]]['Winner'] = p
             turntaken = True
         #endif
       #endfor
     #endwhile
     
     pp(hauls)
+    with open(args.output_file, 'w', newline='') as outfile:
+      writer = csv.DictWriter(outfile, fieldnames=fieldnames + ['Winner'])
+      writer.writeheader()
+      for lot_id in lot_ids:
+        writer.writerow(rows[lot_id])
+    #endwith outfile
+    
   #endmain
 
 if __name__ == "__main__":
@@ -129,7 +143,7 @@ if __name__ == "__main__":
     # Optional argument which requires a parameter (eg. -d test)
     #parser.add_argument("-mv", "--max_value", action="store", dest="max_value")
     #parser.add_argument("-mq", "--max_quantity", action="store", dest="max_quantity")
-    #parser.add_argument("-o", "--output_file", action="store", dest="output_file", default='lots_processed.csv')
+    parser.add_argument("-o", "--output_file", action="store", dest="output_file", default='hauls.csv')
 
     # Optional verbosity counter (eg. -v, -vv, -vvv, etc.)
     
