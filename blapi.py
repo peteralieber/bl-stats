@@ -80,8 +80,8 @@ class BL(object):
     else:
       return res['data']
       
-  def getAveragePrice(self, type, no, color):
-    pg = self.getPriceGuide(type, no, color)
+  def getAveragePrice(self, type, no, color, new_or_used='N'):
+    pg = self.getPriceGuide(type, no, color, new_or_used=new_or_used)
     if not pg:
       return 0
     else:
